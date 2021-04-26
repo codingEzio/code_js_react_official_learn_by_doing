@@ -37,3 +37,17 @@
     - `render() {}`
         - *Interacting* with the other *lifecycle methods* (and *arguments*)
         - This by itself returns a *React element* (HTML, are you there?)
+
+
+
+
+### Explanation with each commit 0x01
+- `this.props`
+    - my own words
+        > mere an *object*, assign/access via `.` (e.g. `this.props.name`)
+    - official jargon
+        > Passing data from *parents* to *children* (component)
+- events (`onClick` in this case)
+    - naming convention (I assume): `onEVENT={..}`
+    - either use the *full version* or *arrow function*
+        > `function() { alert('ok') }`
