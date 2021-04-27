@@ -1,6 +1,26 @@
 ### :)
 > Why the fuck I need to learn a new list of jargons?
 
+
+
+
+### Naming
+- these don't matter
+    ```javascript
+    this.state.KEY_BE_ANYTHING
+    this.props.KEY_BE_ANYTHING
+    ```
+- these *should* follow the convention
+    ```javascript
+    // parent - passing down
+    handleClick
+    handle[EVENT]
+
+    // child  - receiving props
+    onClick
+    on[EVENT]
+    ```
+
 ### `React.Component`
 > context: `.. render() { return ( <JSX_STUFF> ) }`
 1. Building blocks of a *React* app
@@ -35,7 +55,7 @@
                 - *It* empowers the *JSX* inside
                 - *JSX* inside *use* stuff outside (*lifecycle* methods + our own)
     - `render() {}`
-        - *Interacting* with the other *lifecycle methods* (and *arguments*)
+        - *Interacting* with the other [*lifecycle methods*](https://programmingwithmosh.com/javascript/react-lifecycle-methods/) (and *arguments*)
         - This by itself returns a *React element* (HTML, are you there?)
 
 
@@ -88,3 +108,31 @@
             ```
     - `this.state.val`
         - another normal JavaScript objects!
+- Dissectioning (assumption)
+    - two changes to `Square`
+        - previously we let `Square` handle it by itself
+            - `setState` and `this.state.OBJ_KEY`
+        - now we pass values down from `Board` to `Square`
+            - `this.props.ACTION()` and `this.props.OBJ_KEY`
+            - and the `constructor` was *removed* from `Square`
+    - on passing *ACTIONS* down to *child component*
+        > Nothing different from simple *values*, only a bit more complicated
+        1. a `Square` is clicked
+        2. `onClick` inside the `Board` wasn't called at this point (its *existence* propels step3)
+        3. *Component itself* <small>(`Board`)</small> tells React to *set up a event listener* (<small>to `Square` I assume</small>)
+        4. `onClick` inside `Square` was called (immediately go back to `Board`)
+        5. `this.handleClick(i)` inside `Board` was called
+    - on `const .. = .. slice()` inside `Board`s `handleClick()`
+        > each time we create a copy then update relevant value
+        1. immutability is easier
+            > *copy* is pretty *cheap* I assume?
+            - no need to look at multiple places to see *who* changed *this variable*
+            - cool features like *undo* and *redo* ("time travel" in our case)
+        2. detecting changes
+            - no need to compare each items one by one
+            - only a `===` is enough (built-in `===` is definitely faster than our own implementation)
+        3. when to re-render
+            - combine with *function being called* like `setState`
+    - some *jargons*
+        - `Square`s are now called *controlled components* (fully, by `Board`)
+
