@@ -1,5 +1,5 @@
 ### :)
-> Why the fuck I need to learn a new list of jargons?
+> Why the fuck do I need to learn a new list of jargons <small?>(***that's why we have this note***)</small>?
 
 
 
@@ -152,3 +152,11 @@
             )
         }
         ```
+
+### Explantion with each commit 0x03
+- Now `X` and `O` could take turns
+    - functionally
+        1. initialize a boolean variable in `this.state`
+        2. do various things then run `this.setState` to update it
+    - visually
+        - access via `this.state.OBJ_KEY`
