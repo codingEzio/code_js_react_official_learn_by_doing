@@ -135,4 +135,20 @@
             - combine with *function being called* like `setState`
     - some *jargons*
         - `Square`s are now called *controlled components* (fully, by `Board`)
-
+- *Functional Component*
+    - WHAT
+        > HTML with *superpowers* <small>(JSX)</small>, *with* exterval values and actions, *without* lifecycle methods
+    - WHEN
+        > It doesn't have any internal state to manage (or done by *parent* instead)
+    - WHY
+        > Easy to write and understand
+    - HOW
+        ```jsx
+        function COMP_NAME(props) {
+            return (
+                // JSX Code
+                //  data  : {props.OBJ_KEY}
+                //  action: {props.ACTION}  (no parentheses!)
+            )
+        }
+        ```
