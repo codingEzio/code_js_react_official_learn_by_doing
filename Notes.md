@@ -160,3 +160,36 @@
         2. do various things then run `this.setState` to update it
     - visually
         - access via `this.state.OBJ_KEY`
+
+### Explanation with each commit 0x04
+- What to do now
+    - determine who's the winner
+    - stop showing *who's next* when the game has already finished
+    - stop accepting *button clicking* when the square is already filled or someone has won
+- task1: winner
+    1. what counts as winning
+        > three consecutive lineup (horizontal, vertial and diagonal)
+    2. who's on the lineup
+        ```bash
+        # e.g. X
+        #   pos_a, pos_b, pos_c = winning_position
+        #   sqr[pos_a]                  one 'X'
+        #   sqr[pos_a] && sqr[pos_b]    two 'X' matching
+        #   sqr[pos_a] && sqr[pos_c]    all three matched
+        ```
+    3. implement this feature
+        - do it outside the lifecycle methods to make the component cleaner
+        - then call it in method `render()` each time when `Board` is changed
+- task2: status text
+    - only a value that determine *who has won* is needed
+        - initialize a variable called `status`
+        - change its text based on the return value of `calculateWinner`
+            > it doesn't have to a boolean, enough for qualifying for `if (COND)`
+- task3: button clicking
+    - intuitively we need modify this in the `onClick` <small>(`handleClick`)</small>
+        ```javascript
+        if (
+            calculateWinner(squares) // there HAS been a winner
+            squares[i]               // OR this place has "taken"
+        )
+        ```

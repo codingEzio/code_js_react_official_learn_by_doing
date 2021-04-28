@@ -23,6 +23,10 @@ class Board extends React.Component {
     handleClick(i) {
         const squares = this.state.squares.slice(); // ~=copy
 
+        if (calculateWinner(squares) || squares[i]) {
+            return;
+        }
+
         squares[i] = this.state.xIsNext ? 'X' : 'O';
 
         this.setState({
@@ -43,7 +47,14 @@ class Board extends React.Component {
     }
 
     render() {
-        const status = `Next player: ${this.state.xIsNext ? 'X' : 'O'}`;
+        const winner = calculateWinner(this.state.squares);
+        let status;
+
+        if (winner) {
+            status = `Winner: ${winner}`;
+        } else {
+            status = `Next player: ${this.state.xIsNext ? 'X' : 'O'}`;
+        }
 
         return (
             <div>
@@ -87,3 +98,30 @@ class Game extends React.Component {
 }
 
 ReactDOM.render(<Game />, document.getElementById('root'));
+
+function calculateWinner(squares) {
+    const lines_winner = [
+        [0, 1, 2],
+        [3, 4, 5],
+        [6, 7, 8],
+        [0, 3, 6],
+        [1, 4, 7],
+        [2, 5, 8],
+        [0, 4, 8],
+        [2, 4, 6],
+    ];
+    for (let i = 0; i < lines_winner.length; i++) {
+        // unpack paths that lead to winning the game
+        const [a, b, c] = lines_winner[i];
+
+        // each condition returns either 'X' or 'O', 3 leads to winning
+        if (
+            squares[a] &&
+            squares[a] === squares[b] &&
+            squares[a] === squares[c]
+        ) {
+            return squares[a];
+        }
+    }
+    return null;
+}
