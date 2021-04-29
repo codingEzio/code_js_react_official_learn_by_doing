@@ -184,7 +184,7 @@
     - only a value that determine *who has won* is needed
         - initialize a variable called `status`
         - change its text based on the return value of `calculateWinner`
-            > it doesn't have to a boolean, enough for qualifying for `if (COND)`
+            > it doesn't have to be a boolean, enough for qualifying for `if (COND)`
 - task3: button clicking
     - intuitively we need modify this in the `onClick` <small>(`handleClick`)</small>
         ```javascript
@@ -192,4 +192,93 @@
             calculateWinner(squares) // there HAS been a winner
             squares[i]               // OR this place has "taken"
         )
+        ```
+
+### Explanation with each commit 0x05
+- What we'll do
+    - Implementing the *time machine* feature
+    - Lifting states *up*, again
+        - previously: from `Square` to `Board`
+        - things we'll do: from `Board` to the `Game` (*root*)
+- Structural overview
+    1. move the `constructor` up to `Game`
+        ```javascript
+        // 1. move from `Board` to `Game`
+        // 2. create a nested array for the "time machine" feature
+        this.state = {
+            // BEFORE
+            // > this.state.squares
+            squares: Array(9).fill(null),
+
+            // AFTER
+            // > this.state.history[N].squares
+            history: [{ squares: Array(9).fill(null) }],
+        }
+        ```
+    2. move the *who's the winner* in the **`render` method** up to `Game`
+        ```javascript
+        // 1. move the JavaScript code from `Board` to `Game`
+        // 2. move the HTML       code from `Board` to `Game`
+        // 3. add two lines specifically caused by 'time machine feature'
+
+        // used for the 'time machine feature'
+        const history = this.state.history;          // local state, nested
+        const current = history[history.length - 1]; // pick "the most recent"
+
+        // BEFORE: <div className="status">       { status }    </div>
+        // AFTER : <div className="game-info>  .. { status } .. </div>
+
+        // these four lines of JavaScript are exactly the same
+        const winner = calculateWinner();
+        let status;
+        if (winner) { ... }
+        else        { ... }
+        ```
+    3. move the `handleClick` up to `Game`
+        ```javascript
+        // 1. accessing `squares`
+        // 2. stopping Board changes from invalid conditions
+        // 3. update relevant state
+
+        // used for the 'time machine feature' (same as above in `render`)
+        const history = this.state.history;          // local state, nested
+        const current = history[history.length - 1]; // pick "the most recent"
+        // make an copy before modifying, as usual
+        const squares = current.squares.slice();
+
+        // the part in the middle is exactly the same
+
+        // the essential part for 'time travel' (saving board state)
+        // expected structure of `history`: [ {s: s1}, {s: s2}, {s: s3} .. ]
+        this.setState({
+            history: history.concat( [ {squares: squares} ] ),
+            xIsNext: !this.state.xIsNext,
+        })
+        ```
+    4. passing down *values* and *methods*
+        ```jsx
+        // after the three steps, the structures of each should be like this:
+        //  `Board`                         renderSquare(i), render()
+        //  `Game`      constructor(props), handleClick(i),  render()
+
+        // now we're gonna passing down those stuff, again
+
+        // `Game`
+        render() { return (
+            // before
+            <Board />
+
+            // after
+            <Board
+                squares={ current.squares }
+                onClick={ (i) => this.handleClick(i) }
+            />
+        )}
+
+        // `Board`
+        renderSquare(i) { return (
+            // props from `Game`
+            this.state.squares[i]   =>  this.props.squares[i]
+            this.handleClick  (i)   =>  this.props.onClick(i)
+        )}
         ```
