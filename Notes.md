@@ -196,7 +196,7 @@
 
 ### Explanation with each commit 0x05
 - What we'll do
-    - Implementing the *time machine* feature
+    - Implementing the *time machine* feature (partially)
     - Lifting states *up*, again
         - previously: from `Square` to `Board`
         - things we'll do: from `Board` to the `Game` (*root*)
@@ -281,4 +281,71 @@
             this.state.squares[i]   =>  this.props.squares[i]
             this.handleClick  (i)   =>  this.props.onClick(i)
         )}
+        ```
+
+### Explanation with each commit 0x06
+> Finish the rest of the *time machine* feature
+1. build the conceptual list using `.map(OBJ, INDEX)`
+   ```jsx
+   // JavaScript - `Game` :: render() :: just below the `current`
+   const movse = history.map(
+       // step returns maps        e.g. {squares: [null, null ..]}
+       // move returns indices     e.g. 0
+       (step, move) => {
+           // the visual part inside the tag `li`
+           const desc = move ?
+               `Go to move #{move}` :
+               `Go to game start`;
+
+           return (
+               <li>
+                   // this does the actual "time travelling"
+                   <button onClick={ () => this.jumpTo(move) }>
+                       {desc}
+                   </button>
+               </li>
+           )
+       }
+   )
+
+   // JSX        - `Game` :: render() :: return :: div :: game-info
+   <ol>{moves}</ol>
+     ```
+2. the actual *time travelling* part (**re-create based on saved states**)
+    - interaction
+        1. playing normally
+        2. display all the steps being taken as a list <small>(`<li>`)</small>
+        3. click one of them
+        4. current states were discarded
+        5. re-create the specific step <small>(*from the beginning to that step*)
+    - initialize an varible `stepNumber` for grabbing the *part* we want
+        > e.g. when we *travel* to the 3nd step, we only want the *current* plus the *two previous steps* from `this.state.history`
+    - implement `jumpTo` to do the *travelling*
+        ```javascript
+        // `Game` :: jumpTo
+        jumpTo(step) {
+            // trigger update -> re-render based on changed `history`
+            this.setState({
+                stepNumber: step,           // jump to where (2, 0->1->2)
+                xIsNext: step % 2 === 0,    // make the order weren't distorted
+            });
+        }
+
+        // `Game` :: render() :: replaced `history[history.length - 1]`
+        const history = history[this.state.stepNumber]
+        ```
+    - update `handleClick(i)` to do the *visual update*
+        ```javascript
+        // `Game` :: handleClick(i) :: at the top
+        const history =
+            this.state.history.slice(
+                0,
+                this.state.stepNumber + 1
+            )
+
+        // `Game` :: handleClick(i) :: at the bottom
+        this.setState({
+            ..
+            stepNumber: history.length,
+        })
         ```
