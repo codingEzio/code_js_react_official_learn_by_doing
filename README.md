@@ -1,6 +1,6 @@
 ### :)
 
-> Why the fuck do I need to learn a new list of jargons <small?>(***that's why we have this note***)</small>?
+> Why the fuck do I need to learn a new list of jargons <small>(***that's why we have this note***)</small>?
 
 ### Naming
 
@@ -68,13 +68,13 @@
 
 - `this.props`
   - my own words
-        > mere an *object*, assign/access via `.` (e.g. `this.props.name`)
+    > mere an *object*, assign/access via `.` (e.g. `this.props.name`)
   - official jargon
-        > Passing data from *parents* to *children* (component)
+    > Passing data from *parents* to *children* (component)
 - events (`onClick` in this case)
   - naming convention (I assume): `onEVENT={..}`
   - either use the *full version* or *arrow function*
-        > `function() { alert('ok') }`
+    > `function() { alert('ok') }`
 
 ### Explantion with each commit 0x02
 
@@ -104,16 +104,17 @@
     - line change: now we *update* it to make it *dynamic*
     - code syntax & the [*concerns*](https://stackoverflow.com/a/53098946) we've mentioned
 
-            ```javascript
-            // React need something to detect changes (in order to re-render)
+        ```javascript
+        // React need something to detect changes (in order to re-render)
 
-            // do changes, but React cannot detect it
-            this.state.color = 'red';
+        // do changes, but React cannot detect it
+        this.state.color = 'red';
 
-            // do changes, and React can detect it
-            // why? because method `render()` was called
-            this.setState({color: 'red'});
-            ```
+        // do changes, and React can detect it
+        // why? because method `render()` was called
+        this.setState({color: 'red'});
+        ```
+
   - `this.state.val`
     - another normal JavaScript objects!
 - Dissectioning (assumption)
@@ -124,50 +125,50 @@
       - `this.props.ACTION()` and `this.props.OBJ_KEY`
       - and the `constructor` was *removed* from `Square`
   - on passing *ACTIONS* down to *child component*
-        > Nothing different from simple *values*, only a bit more complicated
-        1. a `Square` is clicked
-        2. `onClick` inside the `Board` wasn't called at this point (its *existence* propels step3)
-        3. *Component itself* <small>(`Board`)</small> tells React to *set up a event listener* (<small>to `Square` I assume</small>)
-        4. `onClick` inside `Square` was called (immediately go back to `Board`)
-        5. `this.handleClick(i)` inside `Board` was called
+    > Nothing different from simple *values*, only a bit more complicated
+    1. `Square` is clicked
+    2. `onClick` inside the `Board` wasn't called at this point (its *existence* propels step3)
+    3. *Component itself* <small>(`Board`)</small> tells React to *set up a event listener* (<small>to `Square` I assume</small>)
+    4. `onClick` inside `Square` was called (immediately go back to `Board`)
+    5. `this.handleClick(i)` inside `Board` was called
   - on `const .. = .. slice()` inside `Board`s `handleClick()`
-        > each time we create a copy then update relevant value
-        1. immutability is easier
-            > *copy* is pretty *cheap* I assume?
-            - no need to look at multiple places to see *who* changed *this variable*
-            - cool features like *undo* and *redo* ("time travel" in our case)
-        2. detecting changes
-            - no need to compare each items one by one
-            - only a `===` is enough (built-in `===` is definitely faster than our own implementation)
-        3. when to re-render
-            - combine with *function being called* like `setState`
+    > each time we create a copy then update relevant value
+    1. immutability is easier
+        > *copy* is pretty *cheap* I assume?
+        - no need to look at multiple places to see *who* changed *this variable*
+        - cool features like *undo* and *redo* ("time travel" in our case)
+    2. detecting changes
+        - no need to compare each items one by one
+        - only a `===` is enough (built-in `===` is definitely faster than our own implementation)
+    3. when to re-render
+        - combine with *function being called* like `setState`
   - some *jargons*
     - `Square`s are now called *controlled components* (fully, by `Board`)
 - *Functional Component*
   - WHAT
-        > HTML with *superpowers* <small>(JSX)</small>, *with* exterval values and actions, *without* lifecycle methods
+    > HTML with *superpowers* <small>(JSX)</small>, *with* exterval values and actions, *without* lifecycle methods
   - WHEN
-        > It doesn't have any internal state to manage (or done by *parent* instead)
+    > It doesn't have any internal state to manage (or done by *parent* instead)
   - WHY
-        > Easy to write and understand
+    > Easy to write and understand
   - HOW
 
-        ```jsx
-        function COMP_NAME(props) {
-            return (
-                // JSX Code
-                //  data  : {props.OBJ_KEY}
-                //  action: {props.ACTION}  (no parentheses!)
-            )
-        }
-        ```
+    ```jsx
+    function COMP_NAME(props) {
+        return (
+            // JSX Code
+            //  data  : {props.OBJ_KEY}
+            //  action: {props.ACTION}  (no parentheses!)
+        )
+    }
+    ```
 
 ### Explantion with each commit 0x03
 
 - Now `X` and `O` could take turns
   - functionally
-        1. initialize a boolean variable in `this.state`
-        2. do various things then run `this.setState` to update it
+    1. initialize a boolean variable in `this.state`
+    2. do various things then run `this.setState` to update it
   - visually
     - access via `this.state.OBJ_KEY`
 
@@ -197,16 +198,16 @@
   - only a value that determine *who has won* is needed
     - initialize a variable called `status`
     - change its text based on the return value of `calculateWinner`
-            > it doesn't have to be a boolean, enough for qualifying for `if (COND)`
+        > it doesn't have to be a boolean, enough for qualifying for `if (COND)`
 - task3: button clicking
   - intuitively we need modify this in the `onClick` <small>(`handleClick`)</small>
 
-        ```javascript
-        if (
-            calculateWinner(squares) // there HAS been a winner
-            squares[i]               // OR this place has "taken"
-        )
-        ```
+    ```javascript
+    if (
+        calculateWinner(squares) // there HAS been a winner
+        squares[i]               // OR this place has "taken"
+    )
+    ```
 
 ### Explanation with each commit 0x05
 
@@ -218,92 +219,92 @@
 - Structural overview
     1. move the `constructor` up to `Game`
 
-        ```javascript
-        // 1. move from `Board` to `Game`
-        // 2. create a nested array for the "time machine" feature
-        this.state = {
-            // BEFORE
-            // > this.state.squares
-            squares: Array(9).fill(null),
+    ```javascript
+    // 1. move from `Board` to `Game`
+    // 2. create a nested array for the "time machine" feature
+    this.state = {
+        // BEFORE
+        // > this.state.squares
+        squares: Array(9).fill(null),
 
-            // AFTER
-            // > this.state.history[N].squares
-            history: [{ squares: Array(9).fill(null) }],
-        }
-        ```
+        // AFTER
+        // > this.state.history[N].squares
+        history: [{ squares: Array(9).fill(null) }],
+    }
+    ```
 
     2. move the *who's the winner* in the **`render` method** up to `Game`
 
-        ```javascript
-        // 1. move the JavaScript code from `Board` to `Game`
-        // 2. move the HTML       code from `Board` to `Game`
-        // 3. add two lines specifically caused by 'time machine feature'
+    ```javascript
+    // 1. move the JavaScript code from `Board` to `Game`
+    // 2. move the HTML       code from `Board` to `Game`
+    // 3. add two lines specifically caused by 'time machine feature'
 
-        // used for the 'time machine feature'
-        const history = this.state.history;          // local state, nested
-        const current = history[history.length - 1]; // pick "the most recent"
+    // used for the 'time machine feature'
+    const history = this.state.history;          // local state, nested
+    const current = history[history.length - 1]; // pick "the most recent"
 
-        // BEFORE: <div className="status">       { status }    </div>
-        // AFTER : <div className="game-info>  .. { status } .. </div>
+    // BEFORE: <div className="status">       { status }    </div>
+    // AFTER : <div className="game-info>  .. { status } .. </div>
 
-        // these four lines of JavaScript are exactly the same
-        const winner = calculateWinner();
-        let status;
-        if (winner) { ... }
-        else        { ... }
-        ```
+    // these four lines of JavaScript are exactly the same
+    const winner = calculateWinner();
+    let status;
+    if (winner) { ... }
+    else        { ... }
+    ```
 
     3. move the `handleClick` up to `Game`
 
-        ```javascript
-        // 1. accessing `squares`
-        // 2. stopping Board changes from invalid conditions
-        // 3. update relevant state
+    ```javascript
+    // 1. accessing `squares`
+    // 2. stopping Board changes from invalid conditions
+    // 3. update relevant state
 
-        // used for the 'time machine feature' (same as above in `render`)
-        const history = this.state.history;          // local state, nested
-        const current = history[history.length - 1]; // pick "the most recent"
-        // make an copy before modifying, as usual
-        const squares = current.squares.slice();
+    // used for the 'time machine feature' (same as above in `render`)
+    const history = this.state.history;          // local state, nested
+    const current = history[history.length - 1]; // pick "the most recent"
+    // make an copy before modifying, as usual
+    const squares = current.squares.slice();
 
-        // the part in the middle is exactly the same
+    // the part in the middle is exactly the same
 
-        // the essential part for 'time travel' (saving board state)
-        // expected structure of `history`: [ {s: s1}, {s: s2}, {s: s3} .. ]
-        this.setState({
-            history: history.concat( [ {squares: squares} ] ),
-            xIsNext: !this.state.xIsNext,
-        })
-        ```
+    // the essential part for 'time travel' (saving board state)
+    // expected structure of `history`: [ {s: s1}, {s: s2}, {s: s3} .. ]
+    this.setState({
+        history: history.concat( [ {squares: squares} ] ),
+        xIsNext: !this.state.xIsNext,
+    })
+    ```
 
     4. passing down *values* and *methods*
 
-        ```jsx
-        // after the three steps, the structures of each should be like this:
-        //  `Board`                         renderSquare(i), render()
-        //  `Game`      constructor(props), handleClick(i),  render()
+    ```jsx
+    // after the three steps, the structures of each should be like this:
+    //  `Board`                         renderSquare(i), render()
+    //  `Game`      constructor(props), handleClick(i),  render()
 
-        // now we're gonna passing down those stuff, again
+    // now we're gonna passing down those stuff, again
 
-        // `Game`
-        render() { return (
-            // before
-            <Board />
+    // `Game`
+    render() { return (
+        // before
+        <Board />
 
-            // after
-            <Board
-                squares={ current.squares }
-                onClick={ (i) => this.handleClick(i) }
-            />
-        )}
+        // after
+        <Board
+            squares={ current.squares }
+            onClick={ (i) => this.handleClick(i) }
+        />
+    )}
 
-        // `Board`
-        renderSquare(i) { return (
-            // props from `Game`
-            this.state.squares[i]   =>  this.props.squares[i]
-            this.handleClick  (i)   =>  this.props.onClick(i)
-        )}
-        ```
+    // `Board`
+    renderSquare(i) { return (
+        // props from `Game`
+        this.state.squares[i]   =>  this.props.squares[i]
+        this.handleClick  (i)   =>  this.props.onClick(i)
+    )}
+    ```
 
 ### Explanation with each commit 0x06
 
@@ -312,30 +313,30 @@
 1. build the conceptual list using `.map(OBJ, INDEX)`
 
    ```jsx
-   // JavaScript - `Game` :: render() :: just below the `current`
-   const movse = history.map(
-       // step returns maps        e.g. {squares: [null, null ..]}
-       // move returns indices     e.g. 0
-       (step, move) => {
-           // the visual part inside the tag `li`
-           const desc = move ?
-               `Go to move #{move}` :
-               `Go to game start`;
+    // JavaScript - `Game` :: render() :: just below the `current`
+    const movse = history.map(
+        // step returns maps        e.g. {squares: [null, null ..]}
+        // move returns indices     e.g. 0
+        (step, move) => {
+            // the visual part inside the tag `li`
+            const desc = move ?
+                `Go to move #{move}` :
+                `Go to game start`;
 
-           return (
-               <li>
-                   // this does the actual "time travelling"
-                   <button onClick={ () => this.jumpTo(move) }>
-                       {desc}
-                   </button>
-               </li>
-           )
-       }
-   )
+            return (
+                <li>
+                    // this does the actual "time travelling"
+                    <button onClick={ () => this.jumpTo(move) }>
+                        {desc}
+                    </button>
+                </li>
+            )
+        }
+    )
 
-   // JSX        - `Game` :: render() :: return :: div :: game-info
-   <ol>{moves}</ol>
-     ```
+    // JSX        - `Game` :: render() :: return :: div :: game-info
+    <ol>{moves}</ol>
+    ```
 
 2. the actual *time travelling* part (**re-create based on saved states**)
     - interaction
